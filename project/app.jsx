@@ -90,13 +90,20 @@ function RawInfoButton() {
 
 // === Nav ===
 function Nav() {
+  const goHome = (e) => {
+    e.preventDefault();
+    const onHome = window.location.hash === '' || window.location.hash === '#/';
+    if (onHome) {
+      window.scrollTo(0, 0);
+    } else {
+      navigate('/');
+    }
+  };
   return (
     <nav className="nav">
-      <a className="brand" href="#/" onClick={(e) => {e.preventDefault();navigate('/');}} aria-label="Abide — home">
-        <img src="./uploads/abide-logo.png?v=56" alt="Abide" />
-      </a>
+      <a className="brand" href="#/" onClick={goHome} aria-label="Home">John 15:4</a>
       <div className="nav-links">
-        <a href="#/" onClick={(e) => {e.preventDefault();navigate('/');}}>Home</a>
+        <a href="#/" onClick={goHome}>Home</a>
         <a href="#articles" onClick={(e) => {
           e.preventDefault();
           if (window.location.hash !== '#/') navigate('/');
