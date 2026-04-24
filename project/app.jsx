@@ -99,9 +99,19 @@ function Nav() {
       navigate('/');
     }
   };
+  const goBooks = (e) => {
+    e.preventDefault();
+    if (window.location.hash === '#/books') {
+      window.scrollTo(0, 0);
+    } else {
+      navigate('/books');
+    }
+  };
   return (
     <nav className="nav">
-      <a className="brand" href="#/" onClick={goHome} aria-label="Home">John 15:4</a>
+      <a className="brand" href="#/books" onClick={goBooks} aria-label="Jesus the King — Books">
+        Jesus <span className="brand-accent">the</span> King
+      </a>
       <div className="nav-links">
         <a href="#/" onClick={goHome}>Home</a>
         <a href="#articles" onClick={(e) => {
@@ -109,6 +119,7 @@ function Nav() {
           if (window.location.hash !== '#/') navigate('/');
           setTimeout(() => document.getElementById('articles')?.scrollIntoView({ behavior: 'smooth' }), 100);
         }}>Reflections</a>
+        <a href="#/books" onClick={(e) => {e.preventDefault();navigate('/books');}}>Books</a>
         <a href="#/raw" onClick={(e) => {e.preventDefault();navigate('/raw');}}>Raw</a>
         <a href="#/promise" onClick={(e) => {e.preventDefault();navigate('/promise');}}>Our Oath</a>
       </div>
@@ -176,6 +187,24 @@ function Home() {
         </div>
 
         <div className="articles">
+          <div className="article-card books-card" onClick={() => navigate('/books')}>
+            <div className="card-image">
+              <img src="./uploads/jesus-the-king-flat.png?v=58" alt="Jesus the King by Timothy Keller" />
+            </div>
+            <div className="card-body">
+              <div className="pills">
+                <span className="pill">Currently Reading</span>
+                <span className="pill">Spring 2026</span>
+              </div>
+              <div className="card-title">Jesus the King</div>
+              <div className="card-excerpt">Timothy Keller. The book we're walking through together this season — a meditation on the life and death of the Son of God through the Gospel of Mark.</div>
+              <div className="tags">
+                <span className="tag">the book</span>
+                <span className="tag">timothy keller</span>
+              </div>
+            </div>
+          </div>
+
           {articles.map((a) =>
           <div
             key={a.id}
@@ -498,6 +527,120 @@ function RawPage({ id }) {
   );
 }
 
+// === Books Page ===
+function BooksPage() {
+  return (
+    <div className="fade-in books-page">
+      {/* Hero — Keller book */}
+      <section className="book-hero">
+        <div className="book-hero-text">
+          <div className="kicker">
+            <span className="cat">What we're reading</span>
+            <span>·</span>
+            <span>Spring 2026</span>
+          </div>
+          <h1 className="book-hero-title">Jesus<br />the King<span className="dot">.</span></h1>
+          <div className="book-hero-tag">
+            <em>"An extended meditation on the premise that Jesus' life, death, and resurrection form the central event of history."</em>
+          </div>
+          <div className="book-hero-meta">
+            By <strong>Timothy Keller</strong>. Previously published as <em>King's Cross</em>.
+          </div>
+          <a className="book-cta" href="https://www.amazon.com/dp/1594486662" target="_blank" rel="noopener noreferrer">
+            Order on Amazon →
+          </a>
+        </div>
+        <div className="book-hero-image">
+          <img src="./uploads/jesus-the-king.png?v=58" alt="Jesus the King by Timothy Keller" className="book-float" />
+        </div>
+      </section>
+
+      {/* What people are saying */}
+      <section className="book-reviews">
+        <div className="kicker"><span className="cat">What people are saying</span></div>
+        <div className="reviews-grid">
+          <blockquote className="review">
+            <p>"This is the book where Tim Keller hits his stride as an author... Keller directs readers' gaze toward the cross and will not allow them to look away."</p>
+            <cite>Collin Hansen · The Gospel Coalition</cite>
+          </blockquote>
+          <blockquote className="review">
+            <p>"An extended meditation on the premise that Jesus' life, death, and resurrection form the central event of history as well as the central organizing principle of our lives. Keller follows through the Gospel of Mark in a very readable commentary."</p>
+            <cite>ChristianBook Reviewer</cite>
+          </blockquote>
+          <blockquote className="review">
+            <p>"Excellent writing, inspiring insights, and a fresh look at the life of Christ through the lens of his death. I was crying in one chapter and then laughing in the next."</p>
+            <cite>Luminous Libro</cite>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* Inside the Keller book */}
+      <section className="study-guide-inside reverse">
+        <div className="inside-image">
+          <img src="./uploads/jesus-the-king-flat.png?v=59" alt="Jesus the King — front, spine, and back" />
+        </div>
+        <div className="inside-text">
+          <div className="kicker"><span className="cat">Inside the book</span></div>
+          <h2>A journey through the Gospel of Mark.</h2>
+          <ul className="inside-list">
+            <li>Why Jesus came, what he taught, and why he died</li>
+            <li>16 chapters — accessible, conversational, deeply biblical</li>
+            <li>Originally published as <em>King's Cross</em></li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="book-divider"><span>✦</span></div>
+
+      {/* Study Guide */}
+      <section className="book-hero study-guide-hero reverse">
+        <div className="book-hero-image">
+          <img src="./uploads/study-guide.png?v=58" alt="Jesus the King Study Guide" className="book-float" />
+        </div>
+        <div className="book-hero-text">
+          <div className="kicker">
+            <span className="cat">Companion study guide</span>
+            <span>·</span>
+            <span>Nine sessions</span>
+          </div>
+          <h1 className="book-hero-title">The Study<br />Guide<span className="dot">.</span></h1>
+          <div className="book-hero-tag">
+            <em>Scripture passages, reflection questions, discussion prompts. For going deeper, week by week.</em>
+          </div>
+          <div className="book-hero-meta">
+            By <strong>Timothy Keller</strong> &amp; <strong>Spence Shelton</strong>.
+          </div>
+          <a className="book-cta" href="https://www.amazon.com/dp/0310814448" target="_blank" rel="noopener noreferrer">
+            Order the study guide →
+          </a>
+        </div>
+      </section>
+
+      {/* What's inside */}
+      <section className="study-guide-inside">
+        <div className="inside-text">
+          <div className="kicker"><span className="cat">What's inside</span></div>
+          <h2>Nine sessions to walk through together.</h2>
+          <ul className="inside-list">
+            <li>Key scripture passages from each week</li>
+            <li>Insightful questions for personal reflection</li>
+            <li>Group discussion prompts</li>
+            <li>Practical application for daily life</li>
+          </ul>
+        </div>
+        <div className="inside-image">
+          <img src="./uploads/study-guide-flat.png?v=58" alt="Study guide front, spine, and back" />
+        </div>
+      </section>
+
+      <section className="books-back">
+        <a className="back-link" onClick={() => navigate('/')}>← Back home</a>
+      </section>
+    </div>);
+
+}
+
 // === App ===
 function App() {
   const route = useRoute();
@@ -512,6 +655,8 @@ function App() {
     page = <RawPage id={id} />;
   } else if (route === '/promise') {
     page = <PromisePage />;
+  } else if (route === '/books') {
+    page = <BooksPage />;
   } else {
     page = <Home />;
   }
