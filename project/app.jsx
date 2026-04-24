@@ -18,6 +18,23 @@ function navigate(path) {
   window.location.hash = path;
 }
 
+// Keyboard support for clickable divs that act as buttons.
+// Spread onto an element to make it tabbable + Enter/Space activates.
+function clickable(handler, label) {
+  return {
+    onClick: handler,
+    onKeyDown: (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handler();
+      }
+    },
+    role: 'button',
+    tabIndex: 0,
+    'aria-label': label,
+  };
+}
+
 function calcReadTime(text) {
   const words = (text || '').trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 220)) + ' min';
@@ -187,9 +204,9 @@ function Home() {
         </div>
 
         <div className="articles">
-          <div className="article-card books-card" onClick={() => navigate('/books')}>
+          <div className="article-card books-card" {...clickable(() => navigate('/books'), 'Read about Jesus the King')}>
             <div className="card-image">
-              <img src="./uploads/jesus-the-king-flat.png?v=58" alt="Jesus the King by Timothy Keller" />
+              <img src="./uploads/jesus-the-king-flat.png?v=58" alt="" loading="lazy" decoding="async" />
             </div>
             <div className="card-body">
               <div className="pills">
@@ -205,14 +222,14 @@ function Home() {
             </div>
           </div>
 
-          {articles.map((a) =>
+          {articles.map((a, i) =>
           <div
             key={a.id}
             className="article-card"
-            onClick={() => navigate('/article/' + a.id)}>
+            {...clickable(() => navigate('/article/' + a.id), `Read ${a.title}`)}>
 
               <div className="card-image">
-                <img src={a.hero} alt="" />
+                <img src={a.hero} alt="" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
               </div>
               <div className="card-body">
                 <div className="pills">
@@ -229,7 +246,7 @@ function Home() {
             </div>
           )}
 
-          <div className="article-card oath-card" onClick={() => navigate('/promise')}>
+          <div className="article-card oath-card" {...clickable(() => navigate('/promise'), 'Read Our Oath')}>
             <div className="card-image oath-card-image">
               <span className="oath-headline">How We<br/>Use AI.</span>
             </div>
@@ -269,7 +286,7 @@ function PromisePage() {
   return (
     <div className="promise-page fade-in">
       <article className="article-body promise-body">
-        <a className="back-link" onClick={() => navigate('/')}>
+        <a className="back-link" href="#/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>
           ← Back home
         </a>
 
@@ -332,7 +349,7 @@ function PromisePage() {
           What you read here is a reflection of a real room of real people trying to follow Jesus on a Tuesday night. The AI helps shape the recap. The Word of God does the teaching. We will hold that line every week.
         </p>
 
-        <a className="back-link" onClick={() => navigate('/')} style={{ marginTop: 48, display: 'inline-block' }}>
+        <a className="back-link" href="#/" onClick={(e) => { e.preventDefault(); navigate('/'); }} style={{ marginTop: 48, display: 'inline-block' }}>
           ← Back home
         </a>
       </article>
@@ -374,7 +391,7 @@ function Article({ id }) {
       </section>
 
       <article className="article-body">
-        <a className="back-link" onClick={() => navigate('/')}>
+        <a className="back-link" href="#/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>
           ← Back to Archive
         </a>
         <div className="article-meta-row">
@@ -393,7 +410,7 @@ function Article({ id }) {
 
         {article.raw && (
           <div className="article-to-raw">
-            <a onClick={() => navigate('/raw/' + article.id)}>
+            <a href={`#/raw/${article.id}`} onClick={(e) => { e.preventDefault(); navigate('/raw/' + article.id); }}>
               ↳ Read the raw notes from this week
             </a>
           </div>
@@ -403,14 +420,14 @@ function Article({ id }) {
       {nextArticle ? (
         <div className="next-article">
           <div className="label">↓ Next Entry — {nextArticle.number} / {nextArticle.category}</div>
-          <div className="title" onClick={() => navigate('/article/' + nextArticle.id)}>
+          <div className="title" {...clickable(() => navigate('/article/' + nextArticle.id), `Read ${nextArticle.title}`)}>
             {nextArticle.title}
           </div>
         </div>
       ) : (
         <div className="next-article">
           <div className="label">↓ Next Up — Our Oath</div>
-          <div className="title" onClick={() => navigate('/promise')}>
+          <div className="title" {...clickable(() => navigate('/promise'), 'Read Our Oath')}>
             We Use AI.
           </div>
         </div>
@@ -442,7 +459,7 @@ function RawIndex() {
             <div
               key={a.id}
               className="article-card raw-card"
-              onClick={() => navigate('/raw/' + a.id)}
+              {...clickable(() => navigate('/raw/' + a.id), `Read raw notes for ${a.title}`)}
             >
               <div className="card-image raw-card-image">
                 <span className="raw-card-mark">RAW</span>
@@ -501,7 +518,7 @@ function RawPage({ id }) {
       </section>
 
       <article className="article-body raw-body">
-        <a className="back-link" onClick={() => navigate('/raw')}>
+        <a className="back-link" href="#/raw" onClick={(e) => { e.preventDefault(); navigate('/raw'); }}>
           ← Back to Raw
         </a>
         <div className="article-meta-row">
@@ -518,7 +535,7 @@ function RawPage({ id }) {
         })}
 
         <div className="raw-footer-link">
-          <a onClick={() => navigate('/article/' + article.id)}>
+          <a href={`#/article/${article.id}`} onClick={(e) => { e.preventDefault(); navigate('/article/' + article.id); }}>
             Read the study guide for this week →
           </a>
         </div>
@@ -635,7 +652,7 @@ function BooksPage() {
       </section>
 
       <section className="books-back">
-        <a className="back-link" onClick={() => navigate('/')}>← Back home</a>
+        <a className="back-link" href="#/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>← Back home</a>
       </section>
     </div>);
 
