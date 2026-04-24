@@ -1,2 +1,6 @@
 .DS_Store
 .netlify/
+
+# Scratch folder for exploratory assets we haven't committed to using.
+# Lives outside project/ so it doesn't get deployed by Netlify either way.
+scratch/
