@@ -92,7 +92,9 @@ function RawInfoButton() {
 function Nav() {
   return (
     <nav className="nav">
-      <a className="brand" href="#/" onClick={(e) => {e.preventDefault();navigate('/');}}>ABIDE</a>
+      <a className="brand" href="#/" onClick={(e) => {e.preventDefault();navigate('/');}} aria-label="Abide — home">
+        <img src="./uploads/abide-logo.png?v=56" alt="Abide" />
+      </a>
       <div className="nav-links">
         <a href="#/" onClick={(e) => {e.preventDefault();navigate('/');}}>Home</a>
         <a href="#articles" onClick={(e) => {
