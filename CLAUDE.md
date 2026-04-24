@@ -49,9 +49,9 @@ Routing is hash-based (`#/article/...`), handled by the `useRoute` hook in `app.
 | `--fg-dim`    | `#8a857d`                  | Secondary text, kicker labels                     |
 | `--fg-mute`   | `#4a4742`                  | Tertiary (captions, credits)                      |
 | `--rule`      | `#1f1d1b`                  | Dividers, borders                                 |
-| `--accent`    | `oklch(0.78 0.08 150)`     | Sage green — hover, highlights, accents (default) |
+| `--accent`    | `oklch(0.6 0.22 25)`       | Rich red ("blood of Jesus") — hover, highlights, accents, site-wide |
 
-**Raw pages override `--accent`** to `oklch(0.6 0.22 25)` — a rich red ("blood of Jesus"). Redefined on `.raw-index` and `.raw-page` scopes; cascades to all descendants automatically. Do not hardcode accent colors — always use `var(--accent)` so the Raw override works.
+The accent is red everywhere (site-wide standard). Earlier iterations had sage green as default and red scoped only to Raw; that split was collapsed. Always use `var(--accent)` rather than hardcoding the color so any future re-theme is a one-line change.
 
 Cream and white remain primary everywhere. The accent is accent only — never body text, never large surface fills.
 

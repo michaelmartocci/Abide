@@ -10,7 +10,7 @@
   --fg-dim: #8a857d;
   --fg-mute: #4a4742;
   --rule: #1f1d1b;
-  --accent: oklch(0.78 0.08 150);
+  --accent: oklch(0.6 0.22 25);
   --display: 'Anton', 'Arial Narrow', sans-serif;
   --serif: 'Instrument Serif', Georgia, serif;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -574,12 +574,6 @@ img { max-width: 100%; display: block; }
 }
 
 /* === Raw index + Raw page === */
-/* Raw uses a red accent (blood of Jesus) instead of the amber orange.
-   Redefining --accent inside these scopes automatically retints every
-   descendant hover state, tag border, etc. Cream and white stay primary. */
-.raw-index, .raw-page {
-  --accent: oklch(0.6 0.22 25);
-}
 .raw-dot { color: var(--accent); }
 .raw-index-sub em {
   font-style: normal;
@@ -781,8 +775,6 @@ img { max-width: 100%; display: block; }
 
 /* Modal backdrop + content */
 .raw-modal-backdrop {
-  /* Modal renders via portal outside .raw-*, so re-apply the red accent here. */
-  --accent: oklch(0.6 0.22 25);
   position: fixed;
   inset: 0;
   background: rgba(10, 10, 10, 0.72);
