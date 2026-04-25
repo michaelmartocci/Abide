@@ -333,6 +333,16 @@ img { max-width: 100%; display: block; }
 }
 .oath-card:hover .oath-headline { transform: scale(1.05); }
 
+.article-card .card-image img.oath-logo {
+  width: auto;
+  height: 78%;
+  max-height: 240px;
+  object-fit: contain;
+  transition: transform 0.8s cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+}
+.oath-card:hover .oath-logo { transform: scale(1.05); }
+
 /* Section head count pill */
 .section-head .count-pill {
   display: inline-block;

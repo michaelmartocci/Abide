@@ -247,7 +247,7 @@ function Home() {
 
           <div className="article-card oath-card" {...clickable(() => navigate('/promise'), 'Read Our Oath')}>
             <div className="card-image oath-card-image">
-              <span className="oath-headline">How We<br/>Use AI.</span>
+              <img src="./uploads/abide-logo-512.png?v=66" alt="" className="oath-logo" loading="lazy" decoding="async" />
             </div>
             <div className="card-body">
               <div className="pills">
