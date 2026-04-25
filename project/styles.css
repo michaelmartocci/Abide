@@ -1299,13 +1299,16 @@ img { max-width: 100%; display: block; }
 @media (max-width: 720px) {
   .book-hero,
   .book-hero.reverse,
-  .study-guide-inside {
+  .study-guide-inside,
+  .study-guide-inside.reverse {
     grid-template-columns: 1fr;
     gap: 32px;
     padding: 32px 20px 64px;
   }
   .book-hero.reverse .book-hero-image { order: 0; }
   .book-hero-image { order: -1; }
+  .study-guide-inside .inside-image { order: -1; }
+  .study-guide-inside.reverse .inside-image { order: -1; }
   .book-float { max-width: 320px; }
   .book-reviews { padding: 40px 20px; }
   .reviews-grid { gap: 28px; }
