@@ -316,7 +316,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a0909;
+  background: #000;
   overflow: hidden;
   padding: 24px;
 }
