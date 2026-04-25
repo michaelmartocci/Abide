@@ -14,7 +14,7 @@ Abide/
     ├── app.jsx                ← React components (hash-routed, no build step)
     ├── data.js                ← window.ABIDE_ARTICLES[] — the content model
     ├── styles.css
-    └── uploads/               ← hero images, keyed by week (wk1.png, wk2.png, ...)
+    └── uploads/               ← week hero images (wk1.png, wk2.png, ...) + logo variants (abide-logo*.png) + book covers
 ```
 
 ## Running locally
@@ -31,9 +31,12 @@ Or use the `abide` preview server defined in `.claude/launch.json`.
 - `/article/:id` — polished article page (study guide)
 - `/raw` — Raw index (grid of weeks with raw notes)
 - `/raw/:id` — Raw page (Granola output, structured markup supported)
+- `/books` — Books page (the book the group is reading + companion study guide, with Amazon links)
 - `/promise` — Our Oath page (transparency / AI usage promise)
 
 Routing is hash-based (`#/article/...`), handled by the `useRoute` hook in `app.jsx`.
+
+The nav has four items: **Home · Reflect · Raw · Our Oath**. The "Jesus *the* King" wordmark in the top-left is the entry point to `/books` — there is intentionally no separate "Books" link in the nav. See "Brand wordmark routes to /books" below.
 
 ---
 
@@ -70,6 +73,51 @@ Cream and white remain primary everywhere. The accent is accent only — never b
 - Style: dark, cinematic, symbolic. Natural / cosmic subjects. No people, no faces, no literal religious iconography.
 - Reference image: `project/uploads/wk1.png` (moonlit tree reflected in still cosmic water).
 - Generate via ChatGPT using the image prompt the `article-writer` skill produces.
+
+### Brand mark / Logo
+
+A chrome-finished hexagon with an "A" arrowhead inside, on pure black. Lives in `project/uploads/`:
+
+| File                          | Size       | Used for                                           |
+|-------------------------------|------------|----------------------------------------------------|
+| `abide-logo-source.png`       | 2048×2048  | Master from Midjourney — preserve, don't overwrite |
+| `abide-logo.png`              | 1500×1500  | Working file (center-cropped from source so the hexagon fills ~75% of canvas) |
+| `abide-logo-512.png`          | 512×512    | PWA icon + Oath-card hero                          |
+| `abide-logo-192.png`          | 192×192    | PWA / Android home screen                          |
+| `abide-logo-180.png`          | 180×180    | iOS apple-touch-icon                               |
+| `abide-logo-32.png`           | 32×32      | Browser-tab favicon                                |
+
+**Reading**: A = Alpha. "I am the Alpha and the Omega" (Rev 22:13). Christ as the A at the center; the hexagonal frame is what's around Him; we abide *inside* that. Maps directly to John 15:4, the site's central verse.
+
+**Where it shows up**: as the iOS home-screen icon, the browser-tab favicon, the PWA icon, and the hero image of the "Our Oath" card on the home grid (replacing the earlier styled "How We Use AI." text). Not in the nav — the wordmark "Jesus *the* King" handles that.
+
+The Oath card's `card-image` background is set to pure `#000` to match the logo's baked-in black, so the rectangle edge disappears. If you ever need to place the logo on a non-black surface, generate a transparent-background variant first — the current PNGs all have `#000` baked in.
+
+When iOS home-screen users have the app saved already, they need to remove and re-add it to see a new icon — iOS caches aggressively.
+
+### Shimmer text pattern
+
+A slow gradient sweep on small flagship strings — pure CSS, no motion library (the site has no build step). Used in two places:
+
+- `.footer-credit` ("Powered by Martocci Media") — cream highlight on muted base, 4.5s
+- `.article-to-raw a` and `.raw-footer-link a` (the article ↔ raw cross-links) — red accent highlight on muted base, 6s; speeds to 2.5s on hover
+
+Implementation: a `linear-gradient(110deg, base 35%, highlight 50%, base 75%)` clipped to text via `background-clip: text` + `-webkit-text-fill-color: transparent`, animated by sliding `background-position` from `200% 0` to `-200% 0`. Always include a `prefers-reduced-motion` fallback that swaps to a flat color.
+
+Don't add this to body text or large headlines — only small strings where the slow shimmer reads as quiet polish, not flicker.
+
+### Global UI conventions
+
+A handful of site-wide rules that establish the "premium feel". Preserve these — they're cheap, invisible until they matter, and removing them would be a regression.
+
+- **Focus rings**: `:focus-visible` only (not `:focus`) — keyboard navigation gets a 2px red outline with 3px offset; mouse clicks don't.
+- **Selection color**: red highlight on cream text instead of browser-default blue. Defined on both `::selection` and `::-moz-selection`.
+- **Scrollbar**: thin dark scrollbar (`--rule` thumb on `--bg` track) for both Firefox and WebKit.
+- **Reduced motion**: a single `@media (prefers-reduced-motion: reduce)` block near the top of the stylesheet kills the marquee, the book float, the `.fade-in` mount animation, and card hover lifts. The shimmer rules have their own narrower fallbacks. When you add new animation, add it to the global block.
+- **Viewport units**: hero/page heights use `100dvh`, not `100vh`, so iOS Safari chrome doesn't crop the giant Anton headline.
+- **Press feedback**: `:active` on cards triggers a subtle `scale(0.985)` for tactile feel on touch devices.
+- **Image loading**: the first article hero loads eager; everything below the fold is `loading="lazy" decoding="async"`.
+- **Google Fonts**: a `<link rel="preconnect">` to `fonts.googleapis.com` and `fonts.gstatic.com` is in `<head>` to shave first-paint latency.
 
 ---
 
@@ -169,6 +217,16 @@ The site serves `?v=NN` on `styles.css`, `data.js`, and `app.jsx` to force brows
 ### Raw read time
 
 Auto-calculated from word count at 220 wpm — no need to set manually. `readTime` on the article object governs the article body only.
+
+### Brand wordmark routes to /books
+
+The "Jesus *the* King" wordmark in the top-left of the nav is the entry point to `/books`. There is intentionally no separate "Books" link — that would be redundant and crowd the nav pill at iPhone widths. If you redesign the nav, preserve this routing. The aria-label on the brand says "Jesus the King — Books" so screen readers announce the destination.
+
+### Accessible card buttons
+
+Several elements on the site are clickable `<div>`s for layout reasons (article cards, the Oath card, the next-entry tile, raw cards, the books card). They use the `clickable(handler, ariaLabel)` helper from `app.jsx` to add `role="button"`, `tabIndex={0}`, an `aria-label`, and Enter/Space keyboard activation. When you add a new clickable container that isn't a real `<a>` or `<button>`, use that helper — don't reach for a bare `onClick`.
+
+For navigation that **is** a link (back links, article→raw, raw→article), use a real `<a>` with both an `href` value (so right-click / new tab works, screen readers see it as a link) and an `onClick` that calls `e.preventDefault()` then `navigate()`. The href is the source of truth for assistive tech; the onClick keeps the SPA navigation smooth.
 
 ---
 
