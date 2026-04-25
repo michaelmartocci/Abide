@@ -135,8 +135,7 @@ function Nav() {
           e.preventDefault();
           if (window.location.hash !== '#/') navigate('/');
           setTimeout(() => document.getElementById('articles')?.scrollIntoView({ behavior: 'smooth' }), 100);
-        }}>Reflections</a>
-        <a href="#/books" onClick={(e) => {e.preventDefault();navigate('/books');}}>Books</a>
+        }}>Reflect</a>
         <a href="#/raw" onClick={(e) => {e.preventDefault();navigate('/raw');}}>Raw</a>
         <a href="#/promise" onClick={(e) => {e.preventDefault();navigate('/promise');}}>Our Oath</a>
       </div>
