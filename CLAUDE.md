@@ -240,7 +240,7 @@ For navigation that **is** a link (back links, article→raw, raw→article), us
 - Do not sound AI-written. Plain English. No "delve", "tapestry", "at its core", etc.
 - Raw pages are **verbatim Granola output** — the voice guardrails above apply to articles only, not to Raw.
 
-See `~/.claude/skills/article-writer/SKILL.md` for the full workflow details (transcript → article, Granola → raw, image prompt generation).
+See `.claude/skills/article-writer/SKILL.md` in this project (real copy at `~/.agents/skills/article-writer/`, symlinked here only since 2026-08-31 — it is no longer a global skill) for the full workflow details (transcript → article, Granola → raw, image prompt generation).
 
 ---
 
