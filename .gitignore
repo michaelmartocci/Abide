@@ -4,3 +4,8 @@
 # Scratch folder for exploratory assets we haven't committed to using.
 # Lives outside project/ so it doesn't get deployed by Netlify either way.
 scratch/
+
+# Vercel CLI artifacts. project/.gitignore covers the deployed folder; this
+# catches a stray link or token file if vercel is ever run from the repo root.
+.vercel/
+.env*
