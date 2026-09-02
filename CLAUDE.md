@@ -9,7 +9,7 @@ Abide/
 ├── CLAUDE.md                  ← this file
 ├── README.md
 ├── .claude/launch.json        ← preview server config (port 8090)
-└── project/                   ← site root (everything shipped to Netlify)
+└── project/                   ← site root (this folder is what gets deployed)
     ├── index.html             ← entry point, references data.js + app.jsx with ?v= cache-buster
     ├── app.jsx                ← React components (hash-routed, no build step)
     ├── data.js                ← window.ABIDE_ARTICLES[] — the content model
@@ -246,4 +246,19 @@ See `.claude/skills/article-writer/SKILL.md` in this project (real copy at `~/.a
 
 ## Deployment
 
-Static site — drag `project/` contents to Netlify Drop, or connect the repo for continuous deploys. Images at `project/uploads/` ship with the site; no external image host needed.
+Live at **https://abide-theta.vercel.app** (Vercel project `abide`). Note the suffix — `abide.vercel.app` belongs to someone else, so Vercel appended `-theta`.
+
+**Pushing to `main` deploys it.** The Vercel project is connected to this repo with its Root Directory set to `project`, so it serves that folder as a static site. No build step runs; the files ship exactly as they sit here. Images at `project/uploads/` ship with the site, so there's no external image host to keep in sync.
+
+To deploy without pushing (a quick check, or when `main` isn't ready):
+
+```
+cd project && vercel deploy --prod --yes
+```
+
+Two files in `project/` support this and shouldn't be deleted:
+
+- `vercel.json` — clean URLs, no trailing slash.
+- `.vercelignore` — keeps dotfiles out of the upload. Vercel serves this folder verbatim, and `vercel link` drops a `.env.local` holding an auth token into it. That must never ship.
+
+The old Netlify project (`dwellingplace`) is switched off and no longer used. Don't deploy there.
